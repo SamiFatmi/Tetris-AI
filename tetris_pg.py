@@ -113,6 +113,11 @@ class GAME():
         for box in self.element.body: 
             if box.y+self.element.position.y-5 == 19 or self.space[int(box.y+self.element.position.y+1-5)][int(box.x+self.element.position.x-5)] == 1 : 
                 collision = True 
+        
+        for x in range(10):
+            if self.space[0][x] == 1:
+                self.game_over()
+
 
         if collision : 
             self.merge_to_space()
@@ -178,6 +183,10 @@ class GAME():
         while self.element.position.y != 5 :
             self.element.position.y +=1 
             self.check_collisions()
+
+    def game_over(self):
+        pygame.quit()
+        sys.exit()
 
 
 
