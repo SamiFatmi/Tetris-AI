@@ -1,5 +1,4 @@
-from turtle import position
-from unicodedata import decimal
+
 from pygame.constants import KEYDOWN, K_UP, K_DOWN,K_RIGHT,K_LEFT
 import pygame, sys, random 
 from pygame.math import Vector2
@@ -7,7 +6,7 @@ from pygame.math import Vector2
 
 class ELEMENT():
     def __init__(self) -> None:
-        self.position = Vector2(9,5)
+        self.position = Vector2(9,4)
         self.type = random.choice(["T","S","Z","L","L2","O","I"])
         self.body_size = Vector2(5,5)
         self.orientation = 1
@@ -93,10 +92,12 @@ class GAME():
         self.element = ELEMENT()
         self.space = [ [ 0 for _ in range(width)] for __ in range(height)]
 
-    
-    def update(self):
+    def draw_game(self):
         self.draw_space()
         self.element.draw_element()
+
+    def update(self):
+        self.element.position.y += 1
         self.check_collisions()
         self.check_cleared_lines()
 
@@ -116,7 +117,6 @@ class GAME():
         if collision : 
             self.merge_to_space()
             self.element = ELEMENT()
-
 
     def check_cleared_lines(self):
         for y in range(20):
@@ -179,9 +179,6 @@ class GAME():
             self.element.position.y +=1 
             self.check_collisions()
 
-            
-
-        pass
 
 
 
@@ -209,7 +206,7 @@ playing_area = pygame.Surface((cell_size*width,cell_size*height))
 playing_area_rect = pygame.Rect(0.5*width*cell_size,0.25*height*cell_size,width*cell_size,height*cell_size)
 
 SCREEN_UPDATE = pygame.USEREVENT
-pygame.time.set_timer(SCREEN_UPDATE,100)
+pygame.time.set_timer(SCREEN_UPDATE,500)
 
 
 while True: 
@@ -217,6 +214,9 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        if event.type == SCREEN_UPDATE :
+            main_game.update()
         
         if event.type == KEYDOWN :
             if event.key == K_UP: 
@@ -231,10 +231,10 @@ while True:
 
     window.fill((94,219,167))
     pygame.draw.rect(window,(57,220,244),playing_area_rect)
-    main_game.update()
+    main_game.draw_game()
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(30)
 
 
     
