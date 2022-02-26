@@ -1,14 +1,25 @@
 import pygame, sys
 
+# settings 
+main_window_width = 400
+main_window_height = 400
+
+#colors:
+background_color = (94,219,167)
+game_space_color = (255,255,255)
+hold_space_color = (255,255,255)
+score_background_color = (255,255,255)
+next_piece_space_color = (255,255,255)
+
 
 #main window
-window = pygame.display.set_mode((400,400))
+window = pygame.display.set_mode((main_window_width,main_window_height))
 
 # spaceholders 
-play_space=pygame.Rect(125,50,150,300)
-hold_space = pygame.Rect(50,50,50,50)
-score_space = pygame.Rect(150,10,100,30) 
-next_piece_space = pygame.Rect(300,50,50,50) 
+play_space=pygame.Rect(int(main_window_width*0.625/2),int(main_window_height*0.25/2),int(main_window_width * 0.375),int(main_window_width*0.75))
+hold_space = pygame.Rect(int(main_window_width*0.125),int(main_window_height*0.25/2),int(main_window_width*0.625/5),int(main_window_width*0.625/5))
+score_space = pygame.Rect(int(main_window_width*0.375),int(main_window_height*0.025),int(main_window_width*0.25),int(main_window_height*0.075)) 
+next_piece_space = pygame.Rect(int(main_window_width*0.75),int(main_window_height*0.25/2),int(main_window_width*0.625/5),int(main_window_width*0.625/5)) 
 
 # clock
 clock = pygame.time.Clock()
@@ -27,13 +38,13 @@ while True:
             sys.exit()
 
     # main window filling 
-    window.fill((94,219,167))
+    window.fill(background_color)
 
     # drawing surfaces
-    pygame.draw.rect(window,(0,0,0),play_space)
-    pygame.draw.rect(window,(0,0,0),hold_space)
-    pygame.draw.rect(window,(0,0,0),score_space)
-    pygame.draw.rect(window,(0,0,0),next_piece_space)
+    pygame.draw.rect(window,game_space_color,play_space)
+    pygame.draw.rect(window,hold_space_color,hold_space)
+    pygame.draw.rect(window,score_background_color,score_space)
+    pygame.draw.rect(window,next_piece_space_color,next_piece_space)
 
     # update & update frequency
     pygame.display.update()
