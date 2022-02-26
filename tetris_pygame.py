@@ -2,8 +2,11 @@ import pygame, sys
 
 
 # settings 
-main_window_size= 600
+main_window_size= 800
 square_size = int(main_window_size * 0.0375)
+print(square_size)
+print(main_window_size * 0.0375)
+grid_thickeness = 1
 
 #colors:
 background_color = (94,219,167)
@@ -53,6 +56,12 @@ while True:
 
     # drawing the element 
     element.draw_element()
+
+    #drawing the grid
+    for x in range(int(main_window_size*0.625/2), int(main_window_size*0.625/2)+10*square_size, square_size):
+        for y in range(int(main_window_size*0.25/2), int(main_window_size*0.25/2)+20*square_size, square_size):
+            rect = pygame.Rect(x, y, square_size, square_size)
+            pygame.draw.rect(window, pygame.Color("black"), rect,grid_thickeness)
 
     # update & update frequency
     pygame.display.update()
