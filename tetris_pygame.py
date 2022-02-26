@@ -2,9 +2,8 @@ import pygame, sys
 
 
 # settings 
-main_window_width = 400
-main_window_height = 400
-square_size = int(main_window_width * 0.0375)
+main_window_size= 600
+square_size = int(main_window_size * 0.0375)
 
 #colors:
 background_color = (94,219,167)
@@ -15,17 +14,17 @@ next_piece_space_color = (255,255,255)
 
 
 #main window
-window = pygame.display.set_mode((main_window_width,main_window_height))
+window = pygame.display.set_mode((main_window_size,main_window_size))
 
 #test element 
 from classes import ELEMENT # placed after window to avoid the circular import error
 element = ELEMENT()
 
 # spaceholders 
-play_space=pygame.Rect(int(main_window_width*0.625/2),int(main_window_height*0.25/2),int(main_window_width * 0.375),int(main_window_width*0.75))
-hold_space = pygame.Rect(int(main_window_width*0.125),int(main_window_height*0.25/2),int(main_window_width*0.625/5),int(main_window_width*0.625/5))
-score_space = pygame.Rect(int(main_window_width*0.375),int(main_window_height*0.025),int(main_window_width*0.25),int(main_window_height*0.075)) 
-next_piece_space = pygame.Rect(int(main_window_width*0.75),int(main_window_height*0.25/2),int(main_window_width*0.625/5),int(main_window_width*0.625/5)) 
+play_space=pygame.Rect(int(main_window_size*0.625/2),int(main_window_size*0.25/2),int(main_window_size * 0.375),int(main_window_size*0.75))
+hold_space = pygame.Rect(int(main_window_size*0.125),int(main_window_size*0.25/2),int(main_window_size*0.625/5),int(main_window_size*0.625/5))
+score_space = pygame.Rect(int(main_window_size*0.375),int(main_window_size*0.025),int(main_window_size*0.25),int(main_window_size*0.075)) 
+next_piece_space = pygame.Rect(int(main_window_size*0.75),int(main_window_size*0.25/2),int(main_window_size*0.625/5),int(main_window_size*0.625/5)) 
 
 # clock
 clock = pygame.time.Clock()
