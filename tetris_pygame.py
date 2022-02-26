@@ -45,6 +45,9 @@ while True:
             pygame.quit()
             sys.exit()
 
+        if event.type == SCREEN_UPDATE : 
+            main_game.update_game()
+
     # main window filling 
     window.fill(background_color)
 

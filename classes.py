@@ -59,4 +59,27 @@ class GAME:
             for y in range(int(main_window_size*0.25/2), int(main_window_size*0.25/2)+20*square_size, square_size):
                 rect = pygame.Rect(x, y, square_size, square_size)
                 pygame.draw.rect(window, grid_color, rect,grid_thickeness)
+
+    def update_game(self):
+        self.current_element.position += Vector2(0,1)
+
+    def move_right(self):
+        pass
+
+    def move_left(self):
+        pass 
+
+    def move_down(self):
+        pass
+
+    def rotate(self):
+        pass 
+
+    def bring_down(self):
+        pass 
+
+    def hold(self):
+        pass 
+
+
      
