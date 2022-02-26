@@ -15,7 +15,6 @@ score_background_color = (255,255,255)
 next_piece_space_color = (255,255,255)
 grid_color = (200,200,200)
 
-
 #main window
 window = pygame.display.set_mode((main_window_size,main_window_size))
 
@@ -24,9 +23,8 @@ from classes import GAME # placed after window to avoid the circular import erro
 main_game = GAME()
 
 # spaceholders 
-
 play_space=pygame.Rect(int(main_window_size*0.625/2),int(main_window_size*0.25/2),10*square_size,20*square_size)
-hold_space = pygame.Rect(int(main_window_size*0.125),int(main_window_size*0.25/2),int(main_window_size*0.625/5),int(main_window_size*0.625/5))
+hold_space = pygame.Rect(int(main_window_size*0.125),int(main_window_size*0.25/2),int(main_window_size*0.625/5),int(main_window_size*0.625/4))
 score_space = pygame.Rect(int(main_window_size*0.375),int(main_window_size*0.025),int(main_window_size*0.25),int(main_window_size*0.075)) 
 next_piece_space = pygame.Rect(int(main_window_size*0.75),int(main_window_size*0.25/2),int(main_window_size*0.625/5),int(main_window_size*0.625/5)) 
 
