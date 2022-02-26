@@ -64,13 +64,13 @@ class GAME:
         self.current_element.position += Vector2(0,1)
 
     def move_right(self):
-        pass
+        self.current_element.position += Vector2(1,0)
 
     def move_left(self):
-        pass 
+        self.current_element.position += Vector2(-1,0)
 
     def move_down(self):
-        pass
+        self.current_element.position += Vector2(0,1)
 
     def rotate(self):
         pass 

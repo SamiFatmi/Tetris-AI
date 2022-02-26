@@ -1,4 +1,5 @@
 import pygame, sys
+from pygame.constants import KEYDOWN,K_UP,K_DOWN,K_LEFT,K_RIGHT,K_SPACE,K_RSHIFT
 
 
 # settings 
@@ -45,8 +46,25 @@ while True:
             pygame.quit()
             sys.exit()
 
+        # game update
         if event.type == SCREEN_UPDATE : 
             main_game.update_game()
+
+        # user input
+        if event.type == pygame.KEYDOWN:
+            if event.key == K_UP:
+                main_game.rotate()
+            if event.key == K_DOWN:
+                main_game.move_down()
+            if event.key == K_LEFT:
+                main_game.move_left()
+            if event.key == K_RIGHT:
+                main_game.move_right()
+            if event.key == K_SPACE:
+                main_game.bring_down()
+            if event.key == K_RSHIFT:
+                main_game.hold()
+        
 
     # main window filling 
     window.fill(background_color)
