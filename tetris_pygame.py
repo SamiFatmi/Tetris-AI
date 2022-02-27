@@ -24,9 +24,9 @@ main_game = GAME()
 
 # spaceholders 
 play_space=pygame.Rect(int(main_window_size*0.625/2),int(main_window_size*0.25/2),10*square_size,20*square_size)
-hold_space = pygame.Rect(int(main_window_size*0.125),int(main_window_size*0.25/2),int(main_window_size*0.625/5),int(main_window_size*0.625/4))
+hold_space = pygame.Rect(main_window_size//16,main_window_size//8,int(main_window_size*0.1875),main_window_size//4)
 score_space = pygame.Rect(int(main_window_size*0.375),int(main_window_size*0.025),int(main_window_size*0.25),int(main_window_size*0.075)) 
-next_piece_space = pygame.Rect(int(main_window_size*0.75),int(main_window_size*0.25/2),int(main_window_size*0.625/5),int(main_window_size*0.625/5)) 
+next_piece_space = pygame.Rect(int(main_window_size*0.75),int(main_window_size*0.25/2),int(main_window_size*0.1875),main_window_size//4) 
 
 # clock
 clock = pygame.time.Clock()
