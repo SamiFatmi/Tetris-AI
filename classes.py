@@ -116,6 +116,7 @@ class GAME:
     def draw_game(self):
         from tetris_pygame import main_window_size, square_size,window,grid_color,grid_thickeness,game_space_color,hold_space_color,score_background_color,next_piece_space_color,play_space,hold_space,score_space,next_piece_space
 
+
         # drawing surfaces
         pygame.draw.rect(window,game_space_color,play_space)
         pygame.draw.rect(window,hold_space_color,hold_space)
@@ -133,7 +134,7 @@ class GAME:
         self.current_element.draw_element()
 
         #draw held and next elemets 
-        self.next_element.position = Vector2(10,10) # position is for test
+        self.next_element.position = Vector2(14,2) # position is for test
         self.next_element.draw_element()
         self.held_element.position = Vector2(-5,2) # position is for test
         self.held_element.draw_element()
@@ -143,6 +144,22 @@ class GAME:
             for y in range(int(main_window_size*0.25/2), int(main_window_size*0.25/2)+20*square_size, square_size):
                 rect = pygame.Rect(x, y, square_size, square_size)
                 pygame.draw.rect(window, grid_color, rect,grid_thickeness)
+
+        #writing Score and HOLD and NEXT
+        pygame.font.init()
+        score_font = pygame.font.SysFont('Comic Sans MS', 30)
+        score_textsurface = score_font.render(f"Score : {self.score}", False, (0, 0, 0))
+        next_font = pygame.font.SysFont('Comic Sans MS', 30)
+        next_textsurface = next_font.render('Next', False, (0, 0, 0))
+        hold_font = pygame.font.SysFont('Comic Sans MS', 30)
+        hold_textsurface = hold_font.render('Hold', False, (0, 0, 0))
+
+        window.blit(score_textsurface,(main_window_size//2.5,main_window_size//32))
+        window.blit(next_textsurface,(main_window_size*0.8,main_window_size//8.5))
+        window.blit(hold_textsurface,(main_window_size//9,main_window_size//8.5))
+
+
+
 
     def update_game(self):
         self.current_element.position += Vector2(0,1)
