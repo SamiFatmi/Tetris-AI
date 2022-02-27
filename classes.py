@@ -6,8 +6,7 @@ class ELEMENT:
     def __init__(self) -> None:
         self.position = (4,2)
         self.orientation = 1
-        #self.element_name = random.choice(["L","J","I","O","S","Z","T"])
-        self.element_name = "I"
+        self.element_name = random.choice(["L","J","I","O","S","Z","T"])
         self.body = self.element_body()
         self.color = self.element_color()
 
