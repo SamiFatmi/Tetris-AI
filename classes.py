@@ -6,7 +6,8 @@ class ELEMENT:
     def __init__(self) -> None:
         self.position = (4,2)
         self.orientation = 1
-        self.element_name = random.choice(["L","L2","I","O","S","Z","T"])
+        #self.element_name = random.choice(["L","J","I","O","S","Z","T"])
+        self.element_name = "I"
         self.body = self.element_body()
         self.color = self.element_color()
 
@@ -20,66 +21,66 @@ class ELEMENT:
     def element_body(self): #decide the element body depending on what element it is and what orientation it is 
         if self.element_name == "T":
             if self.orientation == 1 :
-                self.body = [Vector2(1,0),Vector2(0,1),Vector2(1,1),Vector2(2,1)]
+                self.body = [Vector2(-1,0),Vector2(0,0),Vector2(1,0),Vector2(0,-1)]
                 self.body_size = Vector2(3,2)
             elif self.orientation == 2: 
-                self.body = [Vector2(1,0),Vector2(1,1),Vector2(1,2),Vector2(2,1)]
+                self.body = [Vector2(0,-1),Vector2(0,0),Vector2(0,1),Vector2(1,0)]
                 self.body_size = Vector2(2,3)
             elif self.orientation == 3 :
-                self.body = [Vector2(0,0),Vector2(1,0),Vector2(2,0),Vector2(1,1)]
+                self.body = [Vector2(-1,0),Vector2(0,0),Vector2(1,0),Vector2(0,1)]
                 self.body_size = Vector2(3,2)
             elif self.orientation == 4:
-                self.body = [Vector2(0,1),Vector2(1,0),Vector2(1,1),Vector2(1,2)]
+                self.body = [Vector2(-1,0),Vector2(0,-1),Vector2(0,0),Vector2(0,1)]
                 self.body_size = Vector2(2,3)
         elif self.element_name == "S":
-            if self.orientation in [1,3]  :
-                self.body = [Vector2(1,0),Vector2(2,0),Vector2(0,1),Vector2(1,1)]
+            if self.orientation in [1,3] :
+                self.body = [Vector2(-1,1),Vector2(0,1),Vector2(0,0),Vector2(1,0)]
                 self.body_size = Vector2(3,2)
             else : 
-                self.body = [Vector2(0,0),Vector2(0,1),Vector2(1,1),Vector2(1,2)]
+                self.body = [Vector2(0,-1),Vector2(0,0),Vector2(1,0),Vector2(1,1)]
                 self.body_size = Vector2(2,3)
         elif self.element_name == "Z": 
             if self.orientation in [1,3] :
-                self.body = [Vector2(0,0),Vector2(1,0),Vector2(1,1),Vector2(2,1)]
+                self.body = [Vector2(-1,0),Vector2(0,0),Vector2(0,1),Vector2(1,1)]
                 self.body_size = Vector2(3,2)
             else : 
-                self.body = [Vector2(1,0),Vector2(1,1),Vector2(0,1),Vector2(0,2)]
+                self.body = [Vector2(0,1),Vector2(0,0),Vector2(1,0),Vector2(1,-1)]
                 self.body_size = Vector2(2,3)
         elif self.element_name == "L":
             if self.orientation == 1 :
-                self.body = [Vector2(0,0),Vector2(0,1),Vector2(0,2),Vector2(1,2)]
+                self.body = [Vector2(-1,1),Vector2(-1,0),Vector2(0,0),Vector2(1,0)]
                 self.body_size = Vector2(2,3)
             elif self.orientation == 2: 
-                self.body = [Vector2(0,0),Vector2(1,0),Vector2(2,0),Vector2(0,1)]
+                self.body = [Vector2(-1,-1),Vector2(0,-1),Vector2(0,0),Vector2(0,1)]
                 self.body_size = Vector2(3,2)
             elif self.orientation == 3 :
-                self.body = [Vector2(0,0),Vector2(1,0),Vector2(1,1),Vector2(1,2)]
+                self.body = [Vector2(-1,0),Vector2(0,0),Vector2(1,0),Vector2(1,-1)]
                 self.body_size = Vector2(2,3)
             elif self.orientation == 4:
-                self.body = [Vector2(2,0),Vector2(0,1),Vector2(1,1),Vector2(2,1)]
+                self.body = [Vector2(0,-1),Vector2(0,0),Vector2(0,1),Vector2(1,1)]
                 self.body_size = Vector2(3,2)
-        elif self.element_name == "L2":
+        elif self.element_name == "J":
             if self.orientation == 1 :
-                self.body = [Vector2(0,2),Vector2(1,0),Vector2(1,1),Vector2(1,2)]
+                self.body = [Vector2(-1,0),Vector2(0,0),Vector2(1,0),Vector2(1,1)]
                 self.body_size = Vector2(2,3)
             elif self.orientation == 2: 
-                self.body = [Vector2(0,0),Vector2(0,1),Vector2(1,1),Vector2(2,1)]
+                self.body = [Vector2(0,-1),Vector2(0,0),Vector2(0,1),Vector2(-1,1)]
                 self.body_size = Vector2(3,2)
             elif self.orientation == 3 :
-                self.body = [Vector2(0,0),Vector2(0,1),Vector2(0,2),Vector2(1,0)]
+                self.body = [Vector2(-1,-1),Vector2(-1,0),Vector2(0,0),Vector2(1,0)]
                 self.body_size = Vector2(2,3)
             elif self.orientation == 4:
-                self.body = [Vector2(0,0),Vector2(1,0),Vector2(2,0),Vector2(2,1)]
+                self.body = [Vector2(1,-1),Vector2(0,-1),Vector2(0,0),Vector2(0,1)]
                 self.body_size = Vector2(3,2)
         elif self.element_name == "O":
             self.body = [Vector2(0,0),Vector2(0,1),Vector2(1,0),Vector2(1,1)]
             self.body_size = Vector2(2,2)
         elif self.element_name == "I":
             if self.orientation in [1,3] :
-                self.body = [Vector2(0,1),Vector2(0,2),Vector2(0,3),Vector2(0,0)]
+                self.body = [Vector2(0,-2),Vector2(0,-1),Vector2(0,0),Vector2(0,1)]
                 self.body_size = Vector2(4,1)
             else : 
-                self.body = [Vector2(1,0),Vector2(2,0),Vector2(3,0),Vector2(0,0)]
+                self.body = [Vector2(-2,0),Vector2(-1,0),Vector2(0,0),Vector2(1,0)]
                 self.body_size = Vector2(1,4)
         return self.body
 
@@ -92,7 +93,7 @@ class ELEMENT:
             self.color = (240,0,0)
         elif self.element_name == "L":
             self.color = (240,160,0)
-        elif self.element_name == "L2":
+        elif self.element_name == "J":
             self.color = (0,0,240)
         elif self.element_name == "O":
             self.color = (240,240,0)
@@ -134,9 +135,9 @@ class GAME:
         self.current_element.draw_element()
 
         #draw held and next elemets 
-        self.next_element.position = Vector2(14,2) # position is for test
+        self.next_element.position = Vector2(14,3) # position is for test
         self.next_element.draw_element()
-        self.held_element.position = Vector2(-5,2) # position is for test
+        self.held_element.position = Vector2(-5,3) # position is for test
         self.held_element.draw_element()
 
         #drawing the grid
