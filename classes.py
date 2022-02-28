@@ -4,7 +4,7 @@ from pygame.math import Vector2
 class ELEMENT:
     """ Will contain element shapes and colors and functions for drawing the elements"""
     def __init__(self) -> None:
-        self.position = (4,2)
+        self.position = Vector2(4,0)
         self.orientation = 1
         self.element_name = random.choice(["L","J","I","O","S","Z","T"])
         self.body = self.element_body()
@@ -163,16 +163,37 @@ class GAME:
 
 
     def update_game(self):
+        self.check_collisions()
+        self.check_cleared_lines()
         self.current_element.position += Vector2(0,1)
 
     def move_right(self):
-        self.current_element.position += Vector2(1,0)
+        move = True 
+        for box in self.current_element.body : 
+            if box[0]+self.current_element.position[0] == 9 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0]+1)] != (0,0,0):
+                move = False
+                break 
+        if move :    
+            self.current_element.position += Vector2(1,0)
 
     def move_left(self):
-        self.current_element.position += Vector2(-1,0)
+        move = True 
+        for box in self.current_element.body : 
+            if box[0]+self.current_element.position[0] == 0 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0]-1)] != (0,0,0):
+                move = False
+                break 
+        if move :  
+            self.current_element.position += Vector2(-1,0)
 
     def move_down(self):
-        self.current_element.position += Vector2(0,1)
+        move = True 
+        for box in self.current_element.body : 
+            if self.current_element.position[1] + box[1] == 19 or self.space[int(self.current_element.position[1] + box[1]+1)][int(self.current_element.position[0] + box[0])] != (0,0,0):
+                move = False 
+                break
+        
+        if move :
+            self.current_element.position += Vector2(0,1)
 
     def rotate(self):
         if self.current_element.orientation == 4 :
@@ -183,10 +204,60 @@ class GAME:
         self.current_element.body = self.current_element.element_body()
 
     def bring_down(self):
-        pass 
+        move = True 
+        while move : 
+            move = True 
+            for box in self.current_element.body : 
+                if self.current_element.position[1] + box[1] == 19 or self.space[int(self.current_element.position[1] + box[1]+1)][int(self.current_element.position[0] + box[0])] != (0,0,0):
+                    move = False 
+                    break
+            
+            if move :
+                self.current_element.position += Vector2(0,1)
+
 
     def hold(self):
         pass 
+
+    def merge_element_to_space(self):
+        for box in self.current_element.body : 
+            self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0])] = self.current_element.color
+
+        self.next_element.position = Vector2(4,0)
+        self.current_element = self.next_element
+        self.next_element = ELEMENT()
+
+    def check_collisions(self):
+        for box in self.current_element.body : 
+            if self.current_element.position[1] + box[1] == 19 or self.space[int(self.current_element.position[1] + box[1]+1)][int(self.current_element.position[0] + box[0])] != (0,0,0):
+                self.merge_element_to_space()
+                break
+    
+    def clear_line(self,i):
+        for line_index in range(i,0,-1):
+            self.space[line_index]=self.space[line_index-1]
+
+    def check_cleared_lines(self):
+        line_to_clear = True 
+
+        while line_to_clear: 
+            for i,line in enumerate(self.space): 
+                clear = True 
+                for box in line : 
+                    if box == (0,0,0):
+                        clear = False 
+                        break
+                
+                if clear : 
+                    self.clear_line(i)
+                    break
+
+            if not clear : 
+                line_to_clear = False
+
+
+        
+                    
 
 
      
