@@ -235,7 +235,7 @@ class GAME:
     
     def clear_line(self,i):
         for line_index in range(i,0,-1):
-            self.space[line_index]=self.space[line_index-1]
+            self.space[line_index]=self.space[line_index-1][:]
 
     def check_cleared_lines(self):
         line_to_clear = True 
@@ -249,6 +249,7 @@ class GAME:
                         break
                 
                 if clear : 
+                    self.score += 1
                     self.clear_line(i)
                     break
 
