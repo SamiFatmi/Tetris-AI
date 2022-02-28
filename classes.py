@@ -6,7 +6,7 @@ from pygame.math import Vector2
 class ELEMENT:
     """ Will contain element shapes and colors and functions for drawing the elements"""
     def __init__(self) -> None:
-        self.position = Vector2(4,0)
+        self.position = Vector2(4,-1)
         self.orientation = 1
         self.element_name = random.choice(["L","J","I","O","S","Z","T"])
         self.body = self.element_body()
@@ -16,8 +16,10 @@ class ELEMENT:
         from tetris_pygame import window # place here to avoid the circular import error 
         from tetris_pygame import square_size, main_window_size
         for element in self.body : 
-            element_rect = pygame.Rect(int(main_window_size*0.625/2)+(self.position[0]+element[0])*square_size,int(main_window_size*0.25/2)+(self.position[1]+element[1])*square_size,square_size,square_size)
-            pygame.draw.rect(window,self.color,element_rect)
+            if element[1] + self.position[1] > -1 :
+                element_rect = pygame.Rect(int(main_window_size*0.625/2)+(self.position[0]+element[0])*square_size,int(main_window_size*0.25/2)+(self.position[1]+element[1])*square_size,square_size,square_size)
+                pygame.draw.rect(window,self.color,element_rect)
+
 
     def element_body(self): #decide the element body depending on what element and what orientation it is 
         if self.element_name == "T":
@@ -202,12 +204,10 @@ class GAME:
         return move
 
     def rotate(self):
-        #TODO: rotate
         current_oriention = self.current_element.orientation
         self.current_element.orientation = self.current_element.orientation + 1 if self.current_element.orientation <4 else 1
         self.current_element.body = self.current_element.element_body()
 
-        #TODO: Check if clear 
         clear = True 
         for box in self.current_element.body : 
             if self.current_element.position[0] + box[0] >9 or self.current_element.position[0] + box[0] < 0 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0])]!=(0,0,0):
@@ -215,7 +215,6 @@ class GAME:
                 break 
         
         if not clear : 
-        #TODO: if not clear, check if there is a way to place it to the right or left 
             right_clear = True 
             # check right :
             for box in self.current_element.body : 
@@ -236,7 +235,7 @@ class GAME:
                         out = True
                         break 
 
-                if out : 
+                if out : #double checking for the I elements when on the left side of the screen
                     right_clear = True 
                     for box in self.current_element.body : 
                         if box[0]+self.current_element.position[0]+1>9 or self.space[int(box[1]+self.current_element.position[1])][int(box[0]+self.current_element.position[0]+1)]!=(0,0,0):
@@ -252,9 +251,6 @@ class GAME:
             elif left_clear:
                 self.move_left()     
             else:
-        #TODO: if clear, keep 
-        #TODO: if possible, move and keep 
-        #TODO: if not possible, go back to original orientation
                 self.current_element.orientation = current_oriention
                 self.current_element.body = self.current_element.element_body()
         
@@ -277,7 +273,7 @@ class GAME:
         if self.held_element == 0 : 
             self.held_element = self.current_element
             self.current_element = self.next_element 
-            self.current_element.position = Vector2(4,0)
+            self.current_element.position = Vector2(4,-1)
             self.next_element = ELEMENT() 
         else : 
             element = self.current_element 
@@ -289,13 +285,13 @@ class GAME:
         for box in self.current_element.body : 
             self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0])] = self.current_element.color
 
-        self.next_element.position = Vector2(4,0)
+        self.next_element.position = Vector2(4,-1)
         self.current_element = self.next_element
         self.next_element = ELEMENT()
 
     def check_collisions(self):
         for box in self.current_element.body : 
-            if self.current_element.position[1] + box[1] == 19 or self.space[int(self.current_element.position[1] + box[1]+1)][int(self.current_element.position[0] + box[0])] != (0,0,0):
+            if (box[1]+self.current_element.position[1])>-1 and (self.current_element.position[1] + box[1] == 19 or self.space[int(self.current_element.position[1] + box[1]+1)][int(self.current_element.position[0] + box[0])] != (0,0,0)):
                 self.merge_element_to_space()
                 break
     
@@ -323,7 +319,7 @@ class GAME:
                 line_to_clear = False
     
     def check_game_over(self):
-        if self.space[1]!=[(0,0,0) for _ in range(10)]:
+        if self.space[0]!=[(0,0,0) for _ in range(10)]:
             self.game_over = True 
 
 
