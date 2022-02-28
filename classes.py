@@ -1,3 +1,5 @@
+from multiprocessing.dummy import current_process
+from turtle import position
 import pygame, random
 from pygame.math import Vector2
 
@@ -184,6 +186,7 @@ class GAME:
                 break 
         if move :  
             self.current_element.position += Vector2(-1,0)
+        return move
 
     def move_down(self):
         move = True 
@@ -194,14 +197,66 @@ class GAME:
         
         if move :
             self.current_element.position += Vector2(0,1)
+        return move
 
     def rotate(self):
-        if self.current_element.orientation == 4 :
-            self.current_element.orientation = 1 
-        else : 
-            self.current_element.orientation += 1
-        
+        #TODO: rotate
+        current_oriention = self.current_element.orientation
+        self.current_element.orientation = self.current_element.orientation + 1 if self.current_element.orientation <4 else 1
         self.current_element.body = self.current_element.element_body()
+
+        #TODO: Check if clear 
+        clear = True 
+        for box in self.current_element.body : 
+            if self.current_element.position[0] + box[0] >9 or self.current_element.position[0] + box[0] < 0 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0])]!=(0,0,0):
+                clear = False 
+                break 
+        
+        if not clear : 
+        #TODO: if not clear, check if there is a way to place it to the right or left 
+            right_clear = True 
+            # check right :
+            for box in self.current_element.body : 
+                if box[0]+self.current_element.position[0]+1>9 or self.space[int(box[1]+self.current_element.position[1])][int(box[0]+self.current_element.position[0]+1)]!=(0,0,0):
+                    right_clear = False
+                    break
+            left_clear = True
+            for box in self.current_element.body : 
+                if box[0]+self.current_element.position[0]-1<0 or self.space[int(box[1]+self.current_element.position[1])][int(box[0]+self.current_element.position[0]-1)]!=(0,0,0):
+                    left_clear = False
+                    break
+
+            if right_clear:
+                self.move_right()
+                out = False
+                for box in self.current_element.body :
+                    if self.current_element.position[0] + box[0] < 0 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0])]!=(0,0,0):
+                        out = True
+                        break 
+
+                if out : 
+                    right_clear = True 
+                    for box in self.current_element.body : 
+                        if box[0]+self.current_element.position[0]+1>9 or self.space[int(box[1]+self.current_element.position[1])][int(box[0]+self.current_element.position[0]+1)]!=(0,0,0):
+                            right_clear = False
+                            break
+                    
+                    if right_clear:
+                        self.move_right()
+                    else: 
+                        self.current_element.orientation = current_oriention
+                        self.current_element.body = self.current_element.element_body()
+                        
+            elif left_clear:
+                self.move_left()     
+            else:
+        #TODO: if clear, keep 
+        #TODO: if possible, move and keep 
+        #TODO: if not possible, go back to original orientation
+                self.current_element.orientation = current_oriention
+                self.current_element.body = self.current_element.element_body()
+        
+
 
     def bring_down(self):
         move = True 
