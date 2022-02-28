@@ -48,7 +48,7 @@ while True:
             sys.exit()
 
         # game update
-        if event.type == SCREEN_UPDATE : 
+        if event.type == SCREEN_UPDATE and not main_game.game_over: 
             main_game.update_game()
 
         # user input

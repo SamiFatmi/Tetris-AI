@@ -114,6 +114,7 @@ class GAME:
         self.held_element = 0
         self.space = [ [ (0,0,0) for _ in range(10)] for __ in range(20)]
         self.score = 0
+        self.game_over = False
 
     def draw_game(self):
         from tetris_pygame import main_window_size, square_size,window,grid_color,grid_thickeness,game_space_color,hold_space_color,score_background_color,next_piece_space_color,play_space,hold_space,score_space,next_piece_space,stroke_space,stroke_color,stroke_thickeness
@@ -167,6 +168,7 @@ class GAME:
     def update_game(self):
         self.check_collisions()
         self.check_cleared_lines()
+        self.check_game_over()
         self.current_element.position += Vector2(0,1)
 
     def move_right(self):
@@ -319,6 +321,10 @@ class GAME:
 
             if not clear : 
                 line_to_clear = False
+    
+    def check_game_over(self):
+        if self.space[1]!=[(0,0,0) for _ in range(10)]:
+            self.game_over = True 
 
 
         
