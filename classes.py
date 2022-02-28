@@ -111,7 +111,7 @@ class GAME:
     def __init__(self) -> None:
         self.current_element = ELEMENT()
         self.next_element = ELEMENT() 
-        self.held_element = ELEMENT()
+        self.held_element = 0
         self.space = [ [ (0,0,0) for _ in range(10)] for __ in range(20)]
         self.score = 0
 
@@ -136,11 +136,14 @@ class GAME:
         #draw current element
         self.current_element.draw_element()
 
-        #draw held and next elemets 
+        #draw next element 
         self.next_element.position = Vector2(14,4) # position is for test
         self.next_element.draw_element()
-        self.held_element.position = Vector2(-5,4) # position is for test
-        self.held_element.draw_element()
+
+        #draw held element 
+        if self.held_element != 0 :
+            self.held_element.position = Vector2(-5,4) # position is for test
+            self.held_element.draw_element()
 
         #drawing the grid
         for x in range(int(main_window_size*0.625/2), int(main_window_size*0.625/2)+10*square_size, square_size):
@@ -160,9 +163,6 @@ class GAME:
         window.blit(score_textsurface,(main_window_size//2.5,main_window_size//25))
         window.blit(next_textsurface,(main_window_size*0.8,main_window_size//7.5))
         window.blit(hold_textsurface,(main_window_size//9,main_window_size//7.5))
-
-
-
 
     def update_game(self):
         self.check_collisions()
@@ -246,7 +246,7 @@ class GAME:
                     else: 
                         self.current_element.orientation = current_oriention
                         self.current_element.body = self.current_element.element_body()
-                        
+
             elif left_clear:
                 self.move_left()     
             else:
@@ -272,7 +272,16 @@ class GAME:
 
 
     def hold(self):
-        pass 
+        if self.held_element == 0 : 
+            self.held_element = self.current_element
+            self.current_element = self.next_element 
+            self.current_element.position = Vector2(4,0)
+            self.next_element = ELEMENT() 
+        else : 
+            element = self.current_element 
+            self.current_element = self.held_element
+            self.current_element.position = element.position
+            self.held_element = element
 
     def merge_element_to_space(self):
         for box in self.current_element.body : 
