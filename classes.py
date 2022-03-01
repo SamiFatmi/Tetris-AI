@@ -338,15 +338,28 @@ class AI:
         else : 
             possible_orientations = [1]
 
+        positions_scores = []
         for orientation in possible_orientations:
             # find right and left limit 
+            self.game.move_down()
             self.game.rotate()
             self.game.current_element.orientation = orientation
             self.game.current_element.body = self.game.current_element.element_body()
 
-            
+            right_limit = 9 - self.game.current_element.body[-1][0] 
+            left_limit =  - self.game.current_element.body[0][0] 
 
             # find each possible positions 
+            available_positions = []
+            for position in range(left_limit,right_limit+1,1):
+                #check if empty under the element 
+                
+                #if not, check for the closest obsacle 
+
+                #calculate score based on cleared line, bumpiness, created holes
+
+                #append found positions to available positions and orientation and score to positions scores
+
 
 
      
