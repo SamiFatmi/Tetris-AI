@@ -24,13 +24,13 @@ class ELEMENT:
     def element_body(self): #decide the element body depending on what element and what orientation it is 
         if self.element_name == "T":
             if self.orientation == 1 :
-                self.body = [Vector2(-1,0),Vector2(0,0),Vector2(1,0),Vector2(0,-1)]
+                self.body = [Vector2(-1,0),Vector2(0,0),Vector2(0,-1),Vector2(1,0)]
                 self.body_size = Vector2(3,2)
             elif self.orientation == 2: 
                 self.body = [Vector2(0,-1),Vector2(0,0),Vector2(0,1),Vector2(1,0)]
                 self.body_size = Vector2(2,3)
             elif self.orientation == 3 :
-                self.body = [Vector2(-1,0),Vector2(0,0),Vector2(1,0),Vector2(0,1)]
+                self.body = [Vector2(-1,0),Vector2(0,0),Vector2(0,1),Vector2(1,0)]
                 self.body_size = Vector2(3,2)
             elif self.orientation == 4:
                 self.body = [Vector2(-1,0),Vector2(0,-1),Vector2(0,0),Vector2(0,1)]
@@ -67,13 +67,13 @@ class ELEMENT:
                 self.body = [Vector2(-1,0),Vector2(0,0),Vector2(1,0),Vector2(1,1)]
                 self.body_size = Vector2(2,3)
             elif self.orientation == 2: 
-                self.body = [Vector2(0,-1),Vector2(0,0),Vector2(0,1),Vector2(-1,1)]
+                self.body = [Vector2(-1,1),Vector2(0,-1),Vector2(0,0),Vector2(0,1)]
                 self.body_size = Vector2(3,2)
             elif self.orientation == 3 :
                 self.body = [Vector2(-1,-1),Vector2(-1,0),Vector2(0,0),Vector2(1,0)]
                 self.body_size = Vector2(2,3)
             elif self.orientation == 4:
-                self.body = [Vector2(1,-1),Vector2(0,-1),Vector2(0,0),Vector2(0,1)]
+                self.body = [Vector2(0,-1),Vector2(0,0),Vector2(0,1),Vector2(1,-1)]
                 self.body_size = Vector2(3,2)
         elif self.element_name == "O":
             self.body = [Vector2(0,0),Vector2(0,1),Vector2(1,0),Vector2(1,1)]
@@ -324,7 +324,29 @@ class GAME:
 
 
         
-                    
+class AI: 
+    def __init__(self) -> None:
+        self.game = GAME()
+        self.weights = [1,1,1,1,1,1]
+
+    def decide_best_position(self):
+        # find possible orientations
+        if self.game.current_element.element_name in ["L","J","T"]:
+            possible_orientations = [1,2,3,4]
+        elif self.game.current_element.element_name in ["S","Z","I"]:
+            possible_orientations = [1,2]
+        else : 
+            possible_orientations = [1]
+
+        for orientation in possible_orientations:
+            # find right and left limit 
+            self.game.rotate()
+            self.game.current_element.orientation = orientation
+            self.game.current_element.body = self.game.current_element.element_body()
+
+            
+
+            # find each possible positions 
 
 
      
