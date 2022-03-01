@@ -176,7 +176,7 @@ class GAME:
     def move_right(self):
         move = True 
         for box in self.current_element.body : 
-            if box[0]+self.current_element.position[0] == 9 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0]+1)] != (0,0,0):
+            if box[1] + self.current_element.position[1] >= 0 and (box[0]+self.current_element.position[0] == 9 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0]+1)] != (0,0,0)):
                 move = False
                 break 
         if move :    
@@ -185,7 +185,7 @@ class GAME:
     def move_left(self):
         move = True 
         for box in self.current_element.body : 
-            if box[0]+self.current_element.position[0] == 0 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0]-1)] != (0,0,0):
+            if box[1] + self.current_element.position[1] >= 0 and (box[0]+self.current_element.position[0] == 0 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0]-1)] != (0,0,0)):
                 move = False
                 break 
         if move :  
@@ -210,7 +210,7 @@ class GAME:
 
         clear = True 
         for box in self.current_element.body : 
-            if self.current_element.position[0] + box[0] >9 or self.current_element.position[0] + box[0] < 0 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0])]!=(0,0,0):
+            if box[1] + self.current_element.position[1] >= 0 and (self.current_element.position[0] + box[0] >9 or self.current_element.position[0] + box[0] < 0 or self.space[int(self.current_element.position[1] + box[1])][int(self.current_element.position[0] + box[0])]!=(0,0,0)):
                 clear = False 
                 break 
         
