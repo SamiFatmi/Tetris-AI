@@ -329,6 +329,10 @@ class AI:
         self.game = GAME()
         self.weights = [1,1,1,1,1,1]
 
+    def update(self):
+        self.decide_best_position()
+        self.game.update_game()
+
     def decide_best_position(self):
         # find possible orientations
         if self.game.current_element.element_name in ["L","J","T"]:
@@ -353,13 +357,28 @@ class AI:
             available_positions = []
             for position in range(left_limit,right_limit+1,1):
                 #check if empty under the element 
+                empty_under = True 
+                for box in self.game.current_element.body:
+                    for y in range(box[1]+2,20): 
+                        if self.game.space[y][box[0]+position]!=(0,0,0):
+                            empty_under=False 
+                            break 
+                    if not empty_under: 
+                        break
+            
+            if empty_under: 
+                heights = []
+                for box in self.game.current_element.body:
+                    heights.append(box[1])
                 
+                possible_position = Vector2(position,19-max(heights)) 
+                print(possible_position)
                 #if not, check for the closest obsacle 
 
                 #calculate score based on cleared line, bumpiness, created holes
 
                 #append found positions to available positions and orientation and score to positions scores
-
+                
 
 
      
