@@ -38,41 +38,46 @@ clock = pygame.time.Clock()
 SCREEN_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(SCREEN_UPDATE,500)
 
-#game loop
-while True: 
 
-    for event in pygame.event.get():
-        # close event
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+def main():
+    #game loop
+    while True: 
 
-        # game update
-        if event.type == SCREEN_UPDATE and not main_game.game_over: 
-            main_game.update_game()
+        for event in pygame.event.get():
+            # close event
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-        # user input
-        if event.type == pygame.KEYDOWN:
-            if event.key == K_UP:
-                main_game.rotate()
-            if event.key == K_DOWN:
-                main_game.move_down()
-            if event.key == K_LEFT:
-                main_game.move_left()
-            if event.key == K_RIGHT:
-                main_game.move_right()
-            if event.key == K_SPACE:
-                main_game.bring_down()
-            if event.key == K_RSHIFT:
-                main_game.hold()
-        
+            # game update
+            if event.type == SCREEN_UPDATE and not main_game.game_over: 
+                main_game.update_game()
 
-    # main window filling 
-    window.fill(background_color)
+            # user input
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_UP:
+                    main_game.rotate()
+                if event.key == K_DOWN:
+                    main_game.move_down()
+                if event.key == K_LEFT:
+                    main_game.move_left()
+                if event.key == K_RIGHT:
+                    main_game.move_right()
+                if event.key == K_SPACE:
+                    main_game.bring_down()
+                if event.key == K_RSHIFT:
+                    main_game.hold()
+            
 
-    # drawing the game
-    main_game.draw_game()
+        # main window filling 
+        window.fill(background_color)
 
-    # update & update frequency
-    pygame.display.update()
-    clock.tick(30)
+        # drawing the game
+        main_game.draw_game()
+
+        # update & update frequency
+        pygame.display.update()
+        clock.tick(30)
+
+if __name__ == "__main__":
+    main()
