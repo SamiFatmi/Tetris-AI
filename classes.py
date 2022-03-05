@@ -329,10 +329,16 @@ class GAME:
 class AI: 
     def __init__(self) -> None:
         self.game = GAME()
-        self.weights = [1,1,1]
+        self.weights = [random.random() for _ in range(4)]
+        self.current_best_orientation = 0
+        self.current_best_x = 0 
+        self.current_best_y = 0 
+        self.check = True 
 
     def update(self):
-        self.decide_best_position()
+        if self.check :
+            self.decide_best_position()
+        self.move_to()
         self.game.update_game()
 
     def move_right(self):
@@ -379,26 +385,45 @@ class AI:
             y = possible_position[2]
 
             #copying space and placing the item in it to calculate the score
-            hypothetical_space = self.game.space[:]
+            hypothetical_space = [ self.game.space[i][:] for i in range(len(self.game.space))]
             for box in self.game.current_element.body: 
-                hypothetical_space[box[1]+y][box[0]+x] = (100,100,100)
+                hypothetical_space[int(box[1]+y)][int(box[0]+x)] = (100,100,100)
 
-            bumpiness = self.bumpiness(orientation,x,y,hypothetical_space)
-            cleared_lines = self.cleared_lines(orientation,x,y,hypothetical_space)
-            created_holes = self.holes(orientation,x,y,hypothetical_space)
-            height = self.height(orientation,x,y,hypothetical_space)
+            #calculate score
+            bumpiness = self.bumpiness(hypothetical_space)
+            cleared_lines = self.cleared_lines(hypothetical_space)
+            created_holes = self.holes(hypothetical_space)
+            height = self.height(hypothetical_space)
+            score = self.weights[0]*bumpiness + self.weights[1]*cleared_lines + self.weights[2]*created_holes + self.weights[3]*created_holes
 
-            score = self.weights[0]*bumpiness + self.weights[1]*cleared_lines + self.weights[2]*created_holes
+            #add score and position details to list
             positions_scores.append([score,orientation,x,y])
         
+        #find out the best decision
         positions_scores = sorted(positions_scores,key=operator.itemgetter(0), reverse=True)
-        print(positions_scores[0])
-    
-        return (positions_scores[0][1],positions_scores[0][2],positions_scores[0][3])
+        
+        #assign to self 
+        self.current_best_orientation = positions_scores[0][1]
+        self.current_best_x = positions_scores[0][2]
 
+        self.check = False
+        
+    
 
     def bumpiness(self,space):
-        return 1
+        current_height=0
+        previous_height = 0 
+        bumpiness=0
+
+        for column in range(10):
+            previous_height=current_height
+            for y in range(20):
+                if space[y][column]!=(0,0,0):
+                    current_height = 19-y
+                    break 
+            bumpiness += abs(current_height-previous_height)
+
+        return bumpiness
             
     def cleared_lines(self,space):
         cleared_lines = 0
@@ -426,7 +451,7 @@ class AI:
         return holes 
 
 
-    def height(selfself,space):
+    def height(self,space):
         height = 0 
         for column in range(10):
             for y in range(20):
@@ -436,8 +461,16 @@ class AI:
         return height
 
 
-    def move_to(self,orientation,x,y,space):
-        pass
+    def move_to(self):
+        if self.game.current_element.orientation != self.current_best_orientation : 
+            self.game.rotate()
+        elif self.game.current_element.position[0] < self.current_best_x :  
+            self.game.move_right()
+        elif self.game.current_element.position[0] > self.current_best_x :
+            self.game.move_left()
+        else :
+            self.game.bring_down()
+            self.check = True
 
 
 
