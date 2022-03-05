@@ -1,7 +1,9 @@
+from audioop import reverse
 from multiprocessing.dummy import current_process
 from turtle import position
 import pygame, random
 from pygame.math import Vector2
+import operator
 
 class ELEMENT:
     """ Will contain element shapes and colors and functions for drawing the elements"""
@@ -327,11 +329,14 @@ class GAME:
 class AI: 
     def __init__(self) -> None:
         self.game = GAME()
-        self.weights = [1,1,1,1,1,1]
+        self.weights = [1,1,1]
 
     def update(self):
         self.decide_best_position()
         self.game.update_game()
+
+    def move_right(self):
+        self.game.move_right()
 
     def decide_best_position(self):
         # find possible orientations
@@ -344,41 +349,70 @@ class AI:
 
         positions_scores = []
         for orientation in possible_orientations:
-            # find right and left limit 
-            self.game.move_down()
-            self.game.rotate()
+            # find right and left limit
             self.game.current_element.orientation = orientation
             self.game.current_element.body = self.game.current_element.element_body()
 
-            right_limit = 9 - self.game.current_element.body[-1][0] 
-            left_limit =  - self.game.current_element.body[0][0] 
+            right_limit = int(9 - self.game.current_element.body[-1][0]) 
+            left_limit =  int(- self.game.current_element.body[0][0] )
 
             # find each possible positions 
             available_positions = []
             for position in range(left_limit,right_limit+1,1):
-                #check if empty under the element 
-                empty_under = True 
-                for box in self.game.current_element.body:
-                    for y in range(box[1]+2,20): 
-                        if self.game.space[y][box[0]+position]!=(0,0,0):
-                            empty_under=False 
+                found = False
+                for height in range(0,19):
+                    for box in self.game.current_element.body:
+                        if 0 <= box[1]+height <= 19  and (box[1]+height == 19 or self.game.space[int(box[1]+height-1)][int(box[0]+position)]!= (0,0,0)):
+                            available_positions.append([orientation,position,height])
+                            print(position,height)
+                            found = True
                             break 
-                    if not empty_under: 
+                    if found : 
                         break
+
+
+        #calculate score based on cleared line, bumpiness, created holes
+        for possible_position in available_positions: 
+
+            orientation = possible_position[0]
+            x = possible_position[1]
+            y = possible_position[2]
+
+            #copying space and placing the item in it to calculate the score
+            hypothetical_space = self.game.space[:]
+            for box in self.game.current_element.body: 
+                hypothetical_space[box[1]+y][box[0]+x] = (100,100,100)
+
+            bumpiness = self.check_bumpiness(orientation,x,y,hypothetical_space)
+            cleared_lines = self.check_cleared_lines(orientation,x,y,hypothetical_space)
+            created_holes = self.created_holes(orientation,x,y,hypothetical_space)
+            height = self.height(orientation,x,y,hypothetical_space)
+
+            score = self.weights[0]*bumpiness + self.weights[1]*cleared_lines + self.weights[2]*created_holes
+            positions_scores.append([score,orientation,x,y])
+        
+        positions_scores = sorted(positions_scores,key=operator.itemgetter(0), reverse=True)
+        print(positions_scores[0])
+    
+        return (positions_scores[0][1],positions_scores[0][2],positions_scores[0][3])
+
+
+    def check_bumpiness(self,orientation,x,y,space):
+        return 1
             
-            if empty_under: 
-                heights = []
-                for box in self.game.current_element.body:
-                    heights.append(box[1])
-                
-                possible_position = Vector2(position,19-max(heights)) 
-                print(possible_position)
-                #if not, check for the closest obsacle 
 
-                #calculate score based on cleared line, bumpiness, created holes
+    def check_cleared_lines(self,orientation,x,y,space):
+        return 1 
 
-                #append found positions to available positions and orientation and score to positions scores
-                
+    def created_holes(self,orientation,x,y,space):
+        return 1 
+
+    def height(selfself,orientation,x,y,space):
+        return 1
+
+    def move_to(self,orientation,x,y,space):
+        pass
+
 
 
      
