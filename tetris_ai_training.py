@@ -1,8 +1,19 @@
-import pygame 
 import pygame, sys
-from pygame.constants import KEYDOWN,K_UP,K_DOWN,K_LEFT,K_RIGHT,K_SPACE,K_RSHIFT
-from tetris_pygame import main_window_size,square_size,grid_thickeness,stroke_thickeness,grid_color,stroke_color,hold_space_color,game_space_color,background_color,next_piece_space_color,score_background_color
 
+# settings 
+main_window_size= 800
+square_size = int(main_window_size * 0.0375)
+grid_thickeness = 1
+stroke_thickeness = 4
+
+#colors:
+background_color = (215,238,245)
+game_space_color = (255,255,255)
+stroke_color = (255,0,0)
+hold_space_color = (255,255,255)
+score_background_color = (255,255,255)
+next_piece_space_color = (255,255,255)
+grid_color = (230,230,230)
 
 #main window
 window = pygame.display.set_mode((main_window_size,main_window_size))
@@ -39,7 +50,7 @@ while True:
             ai.update()
 
         # user input
-        if event.type == pygame.KEYDOWN:
+        """if event.type == pygame.KEYDOWN:
             if event.key == K_UP:
                 ai.game.rotate()
             if event.key == K_DOWN:
@@ -51,11 +62,11 @@ while True:
             if event.key == K_SPACE:
                 ai.game.bring_down()
             if event.key == K_RSHIFT:
-                ai.game.hold()
+                ai.game.hold()"""
         
 
     # main window filling 
-    window.fill(background_color)
+    window.fill((0,0,0))
 
     # drawing the game
     ai.game.draw_game()
