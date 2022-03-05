@@ -383,9 +383,9 @@ class AI:
             for box in self.game.current_element.body: 
                 hypothetical_space[box[1]+y][box[0]+x] = (100,100,100)
 
-            bumpiness = self.check_bumpiness(orientation,x,y,hypothetical_space)
-            cleared_lines = self.check_cleared_lines(orientation,x,y,hypothetical_space)
-            created_holes = self.created_holes(orientation,x,y,hypothetical_space)
+            bumpiness = self.bumpiness(orientation,x,y,hypothetical_space)
+            cleared_lines = self.cleared_lines(orientation,x,y,hypothetical_space)
+            created_holes = self.holes(orientation,x,y,hypothetical_space)
             height = self.height(orientation,x,y,hypothetical_space)
 
             score = self.weights[0]*bumpiness + self.weights[1]*cleared_lines + self.weights[2]*created_holes
@@ -397,18 +397,44 @@ class AI:
         return (positions_scores[0][1],positions_scores[0][2],positions_scores[0][3])
 
 
-    def check_bumpiness(self,orientation,x,y,space):
+    def bumpiness(self,space):
         return 1
             
+    def cleared_lines(self,space):
+        cleared_lines = 0
+        for line in space:
+            cleared = True
+            for box in line : 
+                if box == (0,0,0):
+                    cleared = False
+                    break
+            if cleared : 
+                cleared_lines += 1
+          
+        return cleared_lines  
 
-    def check_cleared_lines(self,orientation,x,y,space):
-        return 1 
+    def holes(self,space):
+        holes = 0
+        for column in range(10):
+            found_top = False     
+            for y in range(20):
+                if not found_top and space[y][column]!=(0,0,0):
+                    found_top=True 
+                elif space[y][column]==(0,0,0) :
+                    holes+=1
+                    
+        return holes 
 
-    def created_holes(self,orientation,x,y,space):
-        return 1 
 
-    def height(selfself,orientation,x,y,space):
-        return 1
+    def height(selfself,space):
+        height = 0 
+        for column in range(10):
+            for y in range(20):
+                if space[y][column]!=(0,0,0):
+                    height += 19-y
+                    break 
+        return height
+
 
     def move_to(self,orientation,x,y,space):
         pass
