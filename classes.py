@@ -327,9 +327,9 @@ class GAME:
 
         
 class AI: 
-    def __init__(self) -> None:
+    def __init__(self,weights = [random.random() for _ in range(4)]) -> None:
         self.game = GAME()
-        self.weights = [random.random() for _ in range(4)]
+        self.weights = weights
         self.current_best_orientation = 0
         self.current_best_x = 0 
         self.current_best_y = 0 
@@ -338,7 +338,9 @@ class AI:
     def update(self):
         if self.check :
             self.decide_best_position()
-        self.move_to()
+        
+        if not self.check:
+            self.move_to()
         self.game.update_game()
 
     def move_right(self):
@@ -354,28 +356,33 @@ class AI:
             possible_orientations = [1]
 
         positions_scores = []
+        available_positions = []
         for orientation in possible_orientations:
+            print(f"Orientation {orientation}")
             # find right and left limit
             self.game.current_element.orientation = orientation
             self.game.current_element.body = self.game.current_element.element_body()
 
             right_limit = int(9 - self.game.current_element.body[-1][0]) 
             left_limit =  int(- self.game.current_element.body[0][0] )
+            print(f"Right limit = {right_limit} ")
+            print(f"Left limit = {left_limit} ")
 
             # find each possible positions 
-            available_positions = []
-            for position in range(left_limit,right_limit+1,1):
+            for position in range(left_limit,right_limit,1):
                 found = False
                 for height in range(0,19):
                     for box in self.game.current_element.body:
-                        if 0 <= box[1]+height <= 19  and (box[1]+height == 19 or self.game.space[int(box[1]+height-1)][int(box[0]+position)]!= (0,0,0)):
+                        if 0 <= box[1]+height <= 19  and (box[1]+height == 19 or self.game.space[int(box[1]+height)][int(box[0]+position)]!= (0,0,0)):
                             available_positions.append([orientation,position,height])
-                            print(position,height)
+                            #print(f"{position,height}")
                             found = True
                             break 
                     if found : 
                         break
-
+        
+        for line in self.game.space : 
+            print(line)
 
         #calculate score based on cleared line, bumpiness, created holes
         for possible_position in available_positions: 
@@ -386,7 +393,13 @@ class AI:
 
             #copying space and placing the item in it to calculate the score
             hypothetical_space = [ self.game.space[i][:] for i in range(len(self.game.space))]
+            #print(f"hypothetical for possible position : {x,y}")
+            #if hypothetical_space != self.game.space :
+                #print("spaces don't make sense")
+            #else : 
+                #print("spaces are totally okay")
             for box in self.game.current_element.body: 
+                #print(f"x,y = {int(box[1]+y),int(box[0]+x)}")
                 hypothetical_space[int(box[1]+y)][int(box[0]+x)] = (100,100,100)
 
             #calculate score
@@ -397,16 +410,19 @@ class AI:
             score = self.weights[0]*bumpiness + self.weights[1]*cleared_lines + self.weights[2]*created_holes + self.weights[3]*created_holes
 
             #add score and position details to list
+            #print(f"Score, orient, x,y : {score,orientation,x,y}")
             positions_scores.append([score,orientation,x,y])
         
         #find out the best decision
         positions_scores = sorted(positions_scores,key=operator.itemgetter(0), reverse=True)
         
         #assign to self 
-        self.current_best_orientation = positions_scores[0][1]
-        self.current_best_x = positions_scores[0][2]
-
-        self.check = False
+        #print(f"len(scores) = {len(positions_scores)}")
+        if len(positions_scores)!=0: #to avoid 
+            self.current_best_orientation = positions_scores[0][1]
+            self.current_best_x = positions_scores[0][2]
+            print(f"best_position = {positions_scores[0][2],positions_scores[0][3]}")
+            self.check = False
         
     
 
